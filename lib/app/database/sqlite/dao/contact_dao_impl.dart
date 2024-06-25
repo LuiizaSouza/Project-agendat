@@ -3,7 +3,7 @@ import 'package:agenda_crud/app/Domain/entities/contact.dart';
 import 'package:agenda_crud/app/Domain/interfaces/contact_dao.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../connection.dart';
+import '../../../Sqlite2/Sqlite/connection.dart';
 
 class ContactDAOImpl implements ContactDAO{
    Database? _db;
