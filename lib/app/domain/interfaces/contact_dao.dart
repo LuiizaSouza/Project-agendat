@@ -1,5 +1,5 @@
 
-import 'package:agenda_crud/app/Domain/entities/contact.dart';
+import 'package:agenda_crud/app/domain/entities/contact.dart';
 
 abstract class ContactDAO{
   save(Contact contact);
