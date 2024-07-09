@@ -6,88 +6,85 @@ class ContactForm extends StatelessWidget {
   final _form = GlobalKey<FormState>();
 
   Widget fieldName(ContactFormBack back) {
-    return TextFormField (  
-      validator: back.validateName,
+    return TextFormField(
+      validator: (value) => back.validateName(value!),
       onSaved: (newValue) => back.contact.nome = newValue!,
       initialValue: back.contact.nome,
-      decoration: InputDecoration ( 
-        labelText: 'Nome:'
-      )
+      decoration: InputDecoration(labelText: 'Nome:'),
     );
   }
-  
+
   Widget fieldEmail(ContactFormBack back) {
-    return TextFormField (  
-      validator: back.validateEmail,
-      onSaved: (newValue) => back.contact.email= newValue!,
+    return TextFormField(
+      validator: (value) => back.validateEmail(value!),
+      onSaved: (newValue) => back.contact.email = newValue!,
       initialValue: back.contact.email,
-      decoration: InputDecoration ( 
-        labelText: 'E-mail:'
-      )
+      decoration: InputDecoration(labelText: 'E-mail:'),
     );
   }
 
   Widget fieldPhone(ContactFormBack back) {
     var mask = MaskTextInputFormatter(mask: '(##) # ####-####');
-    return TextFormField (  
-      validator: back.validatePhone,
+    return TextFormField(
+      validator: (value) => back.validatePhone(value!),
       onSaved: (newValue) => back.contact.telefone = newValue!,
       initialValue: back.contact.telefone,
       inputFormatters: [mask],
       keyboardType: TextInputType.number,
-      decoration: InputDecoration ( 
-        labelText: 'Telefone:', 
-        hintText: '(99) 9 9999-9999'
-      )
+      decoration: InputDecoration(
+        labelText: 'Telefone:',
+        hintText: '(99) 9 9999-9999',
+      ),
     );
   }
 
   Widget fieldURLImage(ContactFormBack back) {
-    return TextFormField (  
-      onSaved: (newValue) => back.contact.urlAvatar= newValue!,
+    return TextFormField(
+      onSaved: (newValue) => back.contact.urlAvatar = newValue!,
       initialValue: back.contact.urlAvatar,
-      decoration: InputDecoration ( 
-        labelText: 'Foto:', 
-        hintText: 'http://www.site.com'
-      )
+      decoration: InputDecoration(
+        labelText: 'Endereço Foto:',
+        hintText: 'http://www.site.com',
+      ),
     );
   }
 
-
-   @override
+  @override
   Widget build(BuildContext context) {
     var _back = ContactFormBack(context);
     return Scaffold(
-      appBar: AppBar(  
+      appBar: AppBar(
         title: Text('Cadastro de Contato'),
         actions: [
           IconButton(
             icon: Icon(Icons.save),
-            onPressed: (){
-              _form.currentState?.validate();
-              _form.currentState?.save();
-              if(_back.isValid){
-                _back.save();
-                Navigator.of(context).pop();
+            onPressed: () {
+              if (_form.currentState!.validate()) {
+                _form.currentState!.save();
+                if (_back.isValid) {
+                  _back.save();  // Remove o argumento 'context'
+                  Navigator.of(context).pop();  // Fecha o formulário após salvar
+                }
               }
-            })
+            },
+          ),
         ],
       ),
-      body: Padding(  
+      body: Padding(
         padding: EdgeInsets.all(10),
-        child: Form(  
+        child: Form(
           key: _form,
-          child:  Column (
+          child: Column(
             children: [
               fieldName(_back),
               fieldEmail(_back),
-              fieldPhone(_back), 
-              fieldURLImage(_back)
+              fieldPhone(_back),
+              fieldURLImage(_back),
             ],
-            ),
+          ),
         ),
       ),
-      
     );
   }
 }
+

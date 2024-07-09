@@ -1,41 +1,62 @@
-import 'package:agenda_crud/app/Domain/entities/contact.dart';
-import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:agenda_crud/app/domain/entities/contact.dart';
+import 'package:agenda_crud/app/domain/services/contact_service.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get_it/get_it.dart';
 
-class ContactDetailsBack {
-  final BuildContext context;
-  late final Contact contact;
+class ContactFormBack {
+  Contact contact;
+  var _service = GetIt.I.get<ContactService>();
+  bool _nameIsValid; 
+  bool _emailIsValid; 
+  bool _phoneIsValid; 
 
-  ContactDetailsBack(this.context) {
-    final args = ModalRoute.of(context)?.settings.arguments;
-    if (args is Contact) {
-      contact = args;
-    } else {
-      throw Exception('Contact argument is missing or invalid.');
+  bool get isValid => _nameIsValid && _emailIsValid && _phoneIsValid;
+
+  // diferenciar novo com alteração 
+  ContactFormBack(BuildContext context){
+    var parameter = ModalRoute.of(context).settings.arguments;
+    contact = (parameter == null) ? Contact() : parameter;
+  }
+
+  //salvar 
+  save() async {
+    await _service.save(contact);
+  }
+
+  //validações  
+  String? validateName(String name){
+    try{
+      _service.validateName(name);
+      _nameIsValid = true;
+      return null;
+    }catch(e){
+      _nameIsValid = false;
+      return e.toString();
+    }
+  }
+  
+  String? validateEmail(String email){
+    try{
+      _service.validateEmail(email);
+      _emailIsValid = true;
+      return null;
+    }catch(e){
+      _emailIsValid = false;
+      return e.toString();
+    }
+  }
+  
+  String? validatePhone(String phone){
+    try{
+      _service.validatePhone(phone);
+      _phoneIsValid = true;
+      return null;
+    }catch(e){
+      _phoneIsValid = false;
+      return e.toString();
     }
   }
 
-  void goToBack() {
-    Navigator.of(context).pop();
-  }
 
-  Future<void> _launchApp(String url, Function(BuildContext context) showModalError) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      showModalError(context);
-    }
-  }
-
-  void launchPhone(Function(BuildContext context) showModalError) {
-    _launchApp('tel:${contact.telefone}', showModalError);
-  }
-
-  void launchSMS(Function(BuildContext context) showModalError) {
-    _launchApp('sms:${contact.telefone}', showModalError);
-  }
-
-  void launchEmail(Function(BuildContext context) showModalError) {
-    _launchApp('mailto:${contact.email}', showModalError);
-  }
 }
+
