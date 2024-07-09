@@ -1,6 +1,7 @@
 import 'package:agenda_crud/app/Domain/entities/contact.dart';
 import 'package:agenda_crud/app/domain/exception/domain_layer_exception.dart';
-import 'package:agenda_crud/app/Domain/interfaces/contact_dao.dart';
+import 'package:agenda_crud/app/domain/interfaces/contact_dao.dart';
+
 import 'package:get_it/get_it.dart';
 
 class ContactService{

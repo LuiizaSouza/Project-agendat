@@ -1,6 +1,6 @@
 
 import 'package:agenda_crud/app/Domain/entities/contact.dart';
-import 'package:agenda_crud/app/Domain/interfaces/contact_dao.dart';
+import 'package:agenda_crud/app/Domain/interfaces1/contact_dao.dart';
 import 'package:agenda_crud/app/database/sqlite/connection.dart';
 import 'package:sqflite/sqflite.dart';
 

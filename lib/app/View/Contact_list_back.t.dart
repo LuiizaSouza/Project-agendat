@@ -12,7 +12,6 @@ part of 'contact_list_back.dart';
 
 
 
-
 mixin _$ContactListBack on _ContactListBack, Store {
   final _$listAtom = Atom(name: '_ContactListBack.list');
 
